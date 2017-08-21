@@ -22,13 +22,14 @@ app.use(expressSession({
 }));
 
 app.get('/', (req, res) => {
-  
+
   if (!req.session.inGame) {
     req.session.inGame = true;
-    req.session.word = data.pickWord;
+    req.session.word = data.pickWord();
+    req.session.hiddenWord = data.hiddenWord(req.session.word);
   }
   console.log(req.session);
-  res.render('index');
+  res.render('index', {word:req.session.word, hidden:req.session.hiddenWord});
 });
 
 app.listen(3000, () => {

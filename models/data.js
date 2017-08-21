@@ -16,7 +16,17 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// returns an array of chars representing the hidden word
+function getHiddenWord(str) {
+  let hidden = [];
+
+  for (let i = 0; i < str.length; i++) {
+    hidden.push('_');
+  }
+  return hidden;
+}
+
 module.exports = {
   pickWord: pickWord,
-
+  hiddenWord: getHiddenWord
 };
