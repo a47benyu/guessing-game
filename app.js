@@ -29,11 +29,11 @@ app.get('/', (req, res) => {
     let game = req.session.game;
     game.inGame = true;
     game.isOver = false;
-    game.word = data.pickWord();
-    game.hiddenWord = data.hiddenWord(game.word);
     game.guessed = [];
+    game.word = data.pickWord();
+    game.hiddenWord = data.hideWord(game.word, game.guessed);
     game.guessesLeft = 5;
-    console.log(game.word);
+    console.log(game);
   }
   console.log(req.session);
   res.render('index', req.session.game);
@@ -41,12 +41,11 @@ app.get('/', (req, res) => {
 
 app.post('/guess', (req, res) => {
   let guess = req.body.guess;
+  let game = req.session.game;
   console.log(guess);
-
-  data.checkGuess()
-
-  req.session.game.guessed.push(guess);
-  req.session.game.guessesLeft--;
+  game.hiddenWord = data.hideWord(game.word, game.guessed);
+  game.guessed.push(guess);
+  game.guessesLeft--;
   res.redirect('/');
 });
 
