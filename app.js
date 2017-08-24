@@ -23,13 +23,31 @@ app.use(expressSession({
 
 app.get('/', (req, res) => {
 
-  if (!req.session.inGame) {
-    req.session.inGame = true;
-    req.session.word = data.pickWord();
-    req.session.hiddenWord = data.hiddenWord(req.session.word);
+  // setup game object if user isn't in game
+  if (!req.session.game) {
+    req.session.game = {};
+    let game = req.session.game;
+    game.inGame = true;
+    game.isOver = false;
+    game.word = data.pickWord();
+    game.hiddenWord = data.hiddenWord(game.word);
+    game.guessed = [];
+    game.guessesLeft = 5;
+    console.log(game.word);
   }
   console.log(req.session);
-  res.render('index', {word:req.session.word, hidden:req.session.hiddenWord});
+  res.render('index', req.session.game);
+});
+
+app.post('/guess', (req, res) => {
+  let guess = req.body.guess;
+  console.log(guess);
+
+  data.checkGuess()
+
+  req.session.game.guessed.push(guess);
+  req.session.game.guessesLeft--;
+  res.redirect('/');
 });
 
 app.listen(3000, () => {

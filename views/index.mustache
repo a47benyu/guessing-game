@@ -6,8 +6,14 @@
   </head>
   <body>
     <h3>Welcome to the game</h3>
+    {{#hiddenWord}}{{.}} {{/hiddenWord}}
+    <p>guessed: {{#guessed}}{{.}}, {{/guessed}}</p>
     <p>The word is {{word}}</p>
     <hr>
-    {{#hidden}}{{.}} {{/hidden}}
+    <form class="" action="/guess" method="post">
+      <input type="text" name="guess" value="" placeholder="letter...">
+      <input type="submit" name="" value="Guess!">
+    </form>
+    <p>guesses left: {{guessesLeft}}</p>
   </body>
 </html>

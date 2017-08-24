@@ -26,6 +26,12 @@ function getHiddenWord(str) {
   return hidden;
 }
 
+function checkGuess(word, letter) {
+  if (word.includes(letter)) {
+    return word.replace(/letter/g, )
+  }
+}
+
 module.exports = {
   pickWord: pickWord,
   hiddenWord: getHiddenWord
