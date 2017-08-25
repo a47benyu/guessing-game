@@ -13,34 +13,18 @@ function getRandomInt(min, max) {
 
 // returns an array of characters of a random word
 function pickWord() {
-  return words[getRandomInt(0, words.length)];
+  return words[getRandomInt(0, words.length)].split('');
 }
 
-// returns an array of chars representing the hidden word
-// function revealGuessed(word, guessed) {
-//
-//   let hidden = [];
-//
-//   for (let i = 0; i < word.length; i++) {
-//     for (let j = 0; j < array.length; j++) {
-//       if (word.charAt(i) === guessed[i]) {
-//         hidden.push(word.charAt(i));
-//       };
-//     }
-//   }
-//   return hidden;
-// }
-
+// returns an array of characters
+// letters that have not been guessed are hidden with underscores
 function hideWord(word, guessed) {
-  for (let i = 0; i < word.length; i++) {
-    if (!guessed.includes(word.charAt(i))) {
-      word.replace(/./, '_ ');
-    }
-  }
-  return word;
+  return word.map( e => {
+    if (!guessed.includes(e))
+      return '_';
+    return e;
+  });
 }
-
-
 
 module.exports = {
   pickWord: pickWord,

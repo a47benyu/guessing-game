@@ -35,17 +35,16 @@ app.get('/', (req, res) => {
     game.guessesLeft = 5;
     console.log(game);
   }
-  console.log(req.session);
   res.render('index', req.session.game);
 });
 
 app.post('/guess', (req, res) => {
   let guess = req.body.guess;
   let game = req.session.game;
-  console.log(guess);
-  game.hiddenWord = data.hideWord(game.word, game.guessed);
   game.guessed.push(guess);
   game.guessesLeft--;
+  game.hiddenWord = data.hideWord(game.word, game.guessed);
+  console.log(req.session.game);
   res.redirect('/');
 });
 
