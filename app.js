@@ -3,8 +3,7 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const expressSession = require('express-session');
-
-const data = require('./models/data.js');
+const Game = require('./models/game.js');
 
 const app = express();
 
@@ -13,7 +12,9 @@ app.set('views', './views')
 app.set('view engine', 'mustache')
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(expressValidator());
 app.use(expressSession({
   secret: 'keyboard cat',
@@ -25,27 +26,23 @@ app.get('/', (req, res) => {
 
   // setup game object if user isn't in game
   if (!req.session.game) {
-    req.session.game = {};
-    let game = req.session.game;
-    game.inGame = true;
-    game.isOver = false;
-    game.guessed = [];
-    game.word = data.pickWord();
-    game.hiddenWord = data.hideWord(game.word, game.guessed);
-    game.guessesLeft = 5;
-    console.log(game);
+    req.session.game = Game;
+    Game.newGame();
   }
-  res.render('index', req.session.game);
+
+  res.render('index', Game);
+});
+
+app.get('/gameEnd', (req, res) => {
+  res.render('gameEnd', Game);
+  Game.newGame();
 });
 
 app.post('/guess', (req, res) => {
-  let guess = req.body.guess;
-  let game = req.session.game;
-  game.guessed.push(guess);
-  game.guessesLeft--;
-  game.hiddenWord = data.hideWord(game.word, game.guessed);
-  console.log(req.session.game);
-  res.redirect('/');
+  let guess = req.body.guess.toLowerCase();
+  Game.guess(guess);
+
+  res.redirect(Game.isOver() ? '/gameEnd' : '/');
 });
 
 app.listen(3000, () => {
