@@ -3,15 +3,19 @@ game.won = false;
 game.guessed = [];
 game.word;
 game.hiddenWord;
-game.maxGuesses = 10;
+game.maxGuesses = 8;
 game.guessesLeft = this.maxGuesses;
 game.wordList = [
-  'hello',
+  'tree',
   'ball',
   'city',
   'ocean',
-  'utilities',
-  'conviction'
+  'house',
+  'bird',
+  'people',
+  'table',
+  'phone',
+  'computer'
 ];
 
 // returns an array of characters of a random word

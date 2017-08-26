@@ -23,8 +23,6 @@ app.use(expressSession({
 }));
 
 app.get('/', (req, res) => {
-
-  // setup game object if user isn't in game
   if (!req.session.game) {
     req.session.game = Game;
     Game.newGame();
@@ -39,8 +37,14 @@ app.get('/gameEnd', (req, res) => {
 });
 
 app.post('/guess', (req, res) => {
-  let guess = req.body.guess.toLowerCase();
-  Game.guess(guess);
+  req.checkBody("guess", "Enter a character.").notEmpty();
+  req.checkBody("guess", " You guess must be a letter.").isAlpha();
+  Game.errors = req.validationErrors();
+
+  if (!Game.errors) {
+    let guess = req.body.guess.toLowerCase();
+    Game.guess(guess);
+  }
 
   res.redirect(Game.isOver() ? '/gameEnd' : '/');
 });

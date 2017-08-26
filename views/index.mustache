@@ -7,11 +7,12 @@
 </head>
 
 <body>
-  <h3>Welcome to the game</h3>
+  <h3>Guessing Game</h3>
   {{#hiddenWord}}{{.}} {{/hiddenWord}}
   <p>guessed:
     {{#guessed}}{{.}}, {{/guessed}}
   </p>
+  {{#errors}}{{msg}}{{/errors}}
   <hr>
   <form class="" action="/guess" method="post">
     <input type="text" name="guess" value="" placeholder="letter..." maxlength="1" autofocus>
